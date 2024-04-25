@@ -3,7 +3,6 @@
   <PropertyGroup>
     <Description>A versatile class library designed to simplify the process of converting objects into human-readable strings in .NET applications.</Description>
     <PackageTags>My;Humanizer;Stringify</PackageTags>
-    <Version>1.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
