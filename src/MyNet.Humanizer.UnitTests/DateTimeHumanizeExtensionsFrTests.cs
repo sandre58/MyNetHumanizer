@@ -8,7 +8,7 @@ using Xunit;
 namespace MyNet.Humanizer.UnitTests
 {
     [UseCulture(Culture)]
-    [Collection("DateTimeHumanizeSequential")]
+    [Collection("UseCultureSequential")]
     public class DateTimeHumanizeExtensionsFrTests
     {
         public const string Culture = "fr-FR";

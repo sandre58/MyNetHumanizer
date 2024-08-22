@@ -9,6 +9,7 @@ using Xunit;
 namespace MyNet.Humanizer.UnitTests
 {
     [UseCulture("en-US")]
+    [Collection("UseCultureSequential")]
     public class ToQuantityExtensionsTests
     {
         [Theory]

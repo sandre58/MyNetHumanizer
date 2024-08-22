@@ -15,6 +15,7 @@ namespace MyNet.Humanizer.UnitTests
     }
 
     [UseCulture("en")]
+    [Collection("UseCultureSequential")]
     public class CollectionHumanizeTests
     {
         [Fact]
