@@ -12,6 +12,7 @@ namespace MyNet.Humanizer
     /// </summary>
     public static class StringHumanizeExtensions
     {
+
         private static readonly Regex PascalCaseWordPartsRegex = new(@"[\p{Lu}]?[\p{Ll}]+|[0-9]+[\p{Ll}]*|[\p{Lu}]+(?=[\p{Lu}][\p{Ll}]|[0-9]|\b)|[\p{Lo}]+",
                 RegexOptions.IgnorePatternWhitespace | RegexOptions.ExplicitCapture | RegexOptionsUtil.Compiled);
 

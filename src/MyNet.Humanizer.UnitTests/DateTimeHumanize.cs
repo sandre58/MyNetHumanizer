@@ -40,7 +40,7 @@ namespace MyNet.Humanizer.UnitTests
             else
             {
                 Assert.Equal(expectedString, baseDateUtc?.Add(deltaFromBase).Humanize(utcDate: true, dateToCompareAgainst: baseDateUtc, culture: culture));
-                Assert.Equal(expectedString, baseDate?.Add(deltaFromBase).Humanize(culture, baseDate, utcDate: false));
+                Assert.Equal(expectedString, baseDate?.Add(deltaFromBase).Humanize(baseDate, utcDate: false, culture: culture));
             }
         }
 

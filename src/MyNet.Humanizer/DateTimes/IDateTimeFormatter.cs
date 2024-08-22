@@ -16,19 +16,19 @@ namespace MyNet.Humanizer.DateTimes
         /// Now
         /// </summary>
         /// <returns>Returns Now</returns>
-        string? Now();
+        string Now();
 
         /// <summary>
         /// Never
         /// </summary>
         /// <returns>Returns Never</returns>
-        string? Never();
+        string Never();
 
         /// <summary>
         /// 0 seconds
         /// </summary>
         /// <returns>Returns 0 seconds as the string representation of Zero TimeSpan</returns>
-        string? Zero();
+        string Zero();
 
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace MyNet.Humanizer.DateTimes
         /// <param name="timeUnitTense"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        string? DateHumanize(Tense timeUnitTense, TimeUnit timeUnit, int count);
+        string DateHumanize(Tense timeUnitTense, TimeUnit timeUnit, int count);
 
 
         /// <summary>
@@ -47,6 +47,6 @@ namespace MyNet.Humanizer.DateTimes
         /// <param name="timeUnit"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        string? TimeSpanHumanize(TimeUnit timeUnit, int count);
+        string TimeSpanHumanize(TimeUnit timeUnit, int count);
     }
 }

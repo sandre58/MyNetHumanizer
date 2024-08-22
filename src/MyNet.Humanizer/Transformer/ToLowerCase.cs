@@ -7,6 +7,6 @@ namespace MyNet.Humanizer.Transformer
 {
     internal class ToLowerCase : IStringTransformer
     {
-        public string Transform(string input) => CultureInfo.CurrentCulture.TextInfo.ToLower(input);
+        public string Transform(string input, CultureInfo culture) => culture.TextInfo.ToLower(input);
     }
 }

@@ -82,12 +82,12 @@ namespace MyNet.Humanizer.UnitTests
         }
 
         [Theory]
-        [InlineData("case", 0, "N0", "it-IT", "0 cases")]
+        [InlineData("case", 0, "N0", "it-IT", "0 case")]
         [InlineData("case", 1, "N0", "it-IT", "1 case")]
         [InlineData("case", 2, "N0", "it-IT", "2 cases")]
         [InlineData("case", 1234567, "N0", "it-IT", "1.234.567 cases")]
         [InlineData("case", 1234567, "N2", "it-IT", "1.234.567,00 cases")]
-        [InlineData("euro", 0, "C0", "es-ES", "0 € euros")]
+        [InlineData("euro", 0, "C0", "es-ES", "0 € euro")]
         [InlineData("euro", 1, "C0", "es-ES", "1 € euro")]
         [InlineData("euro", 2, "C0", "es-ES", "2 € euros")]
         [InlineData("euro", 2, "C2", "es-ES", "2,00 € euros")]

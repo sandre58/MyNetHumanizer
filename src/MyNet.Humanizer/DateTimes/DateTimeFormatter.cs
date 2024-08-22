@@ -58,19 +58,19 @@ namespace MyNet.Humanizer.DateTimes
         /// Now
         /// </summary>
         /// <returns>Returns Now</returns>
-        public virtual string? Now() => _culture.Translate(NowFormat);
+        public virtual string Now() => NowFormat.Translate(_culture);
 
         /// <summary>
         /// Never
         /// </summary>
         /// <returns>Returns Never</returns>
-        public virtual string? Never() => _culture.Translate(NeverFormat);
+        public virtual string Never() => NeverFormat.Translate(_culture);
 
         /// <summary>
         /// 0 seconds
         /// </summary>
         /// <returns>Returns 0 seconds as the string representation of Zero TimeSpan</returns>
-        public virtual string? Zero() => _culture.Translate(ZeroFormat);
+        public virtual string Zero() => ZeroFormat.Translate(_culture);
 
         /// <summary>
         /// Returns the string representation of the provided DateTime
@@ -79,7 +79,7 @@ namespace MyNet.Humanizer.DateTimes
         /// <param name="count"></param>
         /// <param name="timeUnitTense"></param>
         /// <returns></returns>
-        public virtual string? DateHumanize(Tense timeUnitTense, TimeUnit timeUnit, int count) => count.ToString(_culture.Translate(GetDateTimeResourceKey(timeUnitTense, timeUnit, count)), _culture);
+        public virtual string DateHumanize(Tense timeUnitTense, TimeUnit timeUnit, int count) => count.ToString(GetDateTimeResourceKey(timeUnitTense, timeUnit, count).Translate(_culture), _culture);
 
         /// <summary>
         /// Returns the string representation of the provided TimeSpan
@@ -88,7 +88,7 @@ namespace MyNet.Humanizer.DateTimes
         /// <param name="count"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException">Is thrown when timeUnit is larger than TimeUnit.Week</exception>
-        public virtual string? TimeSpanHumanize(TimeUnit timeUnit, int count) => count.ToString(_culture.Translate(GetTimeSpanResourceKey(timeUnit, count)), _culture);
+        public virtual string TimeSpanHumanize(TimeUnit timeUnit, int count) => count.ToString(GetTimeSpanResourceKey(timeUnit, count).Translate(_culture), _culture);
 
         /// <summary>
         /// Override this method if your locale has complex rules around multiple units; e.g. Arabic, Russian
@@ -97,9 +97,9 @@ namespace MyNet.Humanizer.DateTimes
         /// <param name="unit"></param>
         /// <param name="count">The number of the units being used in formatting</param>
         /// <returns></returns>
-        protected virtual string? GetDateTimeResourceKey(Tense timeUnitTense, TimeUnit unit, int count) => count == 1 && unit == TimeUnit.Day
+        protected virtual string GetDateTimeResourceKey(Tense timeUnitTense, TimeUnit unit, int count) => count == 1 && unit == TimeUnit.Day
                 ? timeUnitTense == Tense.Future ? TomorrowFormat : YesterdayFormat
-                : DateTimeFormat.FormatWith(timeUnitTense.ToString(), unit.ToString()).WithCountSuffix(count);
+                : DateTimeFormat.FormatWith(timeUnitTense.ToString(), unit.ToString()).ToCountKey(count);
 
         /// <summary>
         /// Override this method if your locale has complex rules around multiple units; e.g. Arabic, Russian
@@ -107,6 +107,6 @@ namespace MyNet.Humanizer.DateTimes
         /// <param name="unit"></param>
         /// <param name="count">The number of the units being used in formatting</param>
         /// <returns></returns>
-        protected virtual string? GetTimeSpanResourceKey(TimeUnit unit, int count) => TimeSpanFormat.FormatWith(unit.ToString()).WithCountSuffix(count);
+        protected virtual string GetTimeSpanResourceKey(TimeUnit unit, int count) => TimeSpanFormat.FormatWith(unit.ToString()).ToCountKey(count);
     }
 }

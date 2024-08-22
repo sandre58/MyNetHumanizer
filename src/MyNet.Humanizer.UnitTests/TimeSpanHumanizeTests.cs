@@ -18,7 +18,7 @@ namespace MyNet.Humanizer.UnitTests
             var culture = new CultureInfo("en-US");
             var qry = from i in Enumerable.Range(0, 1000)
                       let ts = TimeSpan.FromDays(i)
-                      let text = ts.Humanize(precision: 3, culture: culture, maxUnit: TimeUnit.Year)
+                      let text = ts.Humanize(precision: 3, cultureInfo: culture, maxUnit: TimeUnit.Year)
                       select text;
             var grouping = from t in qry
                            group t by t into g
@@ -348,7 +348,7 @@ namespace MyNet.Humanizer.UnitTests
         [InlineData(1, 1, "en-US", "1 millisecond", ", ")]
         public void CanSpecifyCultureExplicitly(int ms, int precision, string culture, string expected, string collectionSeparator)
         {
-            var actual = TimeSpan.FromMilliseconds(ms).Humanize(precision: precision, culture: new CultureInfo(culture), collectionSeparator: collectionSeparator);
+            var actual = TimeSpan.FromMilliseconds(ms).Humanize(precision: precision, cultureInfo: new CultureInfo(culture), collectionSeparator: collectionSeparator);
             Assert.Equal(expected, actual);
         }
     }

@@ -7,6 +7,6 @@ namespace MyNet.Humanizer.Transformer
 {
     internal class ToSentenceCase : IStringTransformer
     {
-        public string Transform(string input) => input.Length >= 1 ? string.Concat(input.Substring(0, 1).ToUpper(CultureInfo.CurrentCulture), input.Substring(1)) : input.ToUpper(CultureInfo.CurrentCulture);
+        public string Transform(string input, CultureInfo culture) => input.Length >= 1 ? string.Concat(input.Substring(0, 1).ToUpper(culture), input.Substring(1)) : input.ToUpper(culture);
     }
 }

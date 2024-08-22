@@ -2,6 +2,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Globalization;
 using System.Linq;
 
 namespace MyNet.Humanizer
@@ -11,9 +12,6 @@ namespace MyNet.Humanizer
     /// </summary>
     public static class EnumDehumanizeExtensions
     {
-        public static TTargetEnum? DehumanizeToNullable<TTargetEnum>(this string input)
-            where TTargetEnum : Enum => DehumanizeToPrivate(input, typeof(TTargetEnum), OnNoMatch.ReturnsDefault) is TTargetEnum result ? result : default;
-
         /// <summary>
         /// Dehumanizes a string into the Enum it was originally Humanized from!
         /// </summary>
@@ -23,8 +21,8 @@ namespace MyNet.Humanizer
         /// <exception cref="ArgumentException">If TTargetEnum is not an enum</exception>
         /// <exception cref="NoMatchFoundException">Couldn't find any enum member that matches the string</exception>
         /// <returns></returns>
-        public static TTargetEnum DehumanizeTo<TTargetEnum>(this string input, OnNoMatch onNoMatch = OnNoMatch.ThrowsException)
-            where TTargetEnum : struct, Enum => DehumanizeToPrivate(input, typeof(TTargetEnum), onNoMatch) is TTargetEnum result ? result : default;
+        public static TTargetEnum DehumanizeTo<TTargetEnum>(this string input, OnNoMatch onNoMatch = OnNoMatch.ReturnsDefault, CultureInfo? culture = null)
+            where TTargetEnum : struct, Enum => DehumanizeToPrivate(input, typeof(TTargetEnum), onNoMatch, culture) is TTargetEnum result ? result : default;
 
         /// <summary>
         /// Dehumanizes a string into the Enum it was originally Humanized from!
@@ -35,9 +33,9 @@ namespace MyNet.Humanizer
         /// <returns></returns>
         /// <exception cref="NoMatchFoundException">Couldn't find any enum member that matches the string</exception>
         /// <exception cref="ArgumentException">If targetEnum is not an enum</exception>
-        public static Enum? DehumanizeTo(this string input, Type targetEnum, OnNoMatch onNoMatch = OnNoMatch.ThrowsException) => DehumanizeToPrivate(input, targetEnum, onNoMatch);
+        public static Enum? DehumanizeTo(this string input, Type targetEnum, OnNoMatch onNoMatch = OnNoMatch.ReturnsDefault, CultureInfo? culture = null) => DehumanizeToPrivate(input, targetEnum, onNoMatch, culture);
 
-        private static Enum? DehumanizeToPrivate(string input, Type targetEnum, OnNoMatch onNoMatch)
+        private static Enum? DehumanizeToPrivate(string input, Type targetEnum, OnNoMatch onNoMatch, CultureInfo? culture = null)
         {
             var nullableType = Nullable.GetUnderlyingType(targetEnum);
 
@@ -49,7 +47,7 @@ namespace MyNet.Humanizer
                             .OfType<Enum>()
                             .FirstOrDefault(value =>
                                 string.Equals(value.ToString(), input, StringComparison.OrdinalIgnoreCase)
-                                || string.Equals(value.Humanize(), input, StringComparison.OrdinalIgnoreCase));
+                                || string.Equals(value.Humanize(cultureInfo: culture), input, StringComparison.OrdinalIgnoreCase));
 
             return match == null && onNoMatch == OnNoMatch.ThrowsException
                 ? throw new NoMatchFoundException("Couldn't find any enum member that matches the string " + input)

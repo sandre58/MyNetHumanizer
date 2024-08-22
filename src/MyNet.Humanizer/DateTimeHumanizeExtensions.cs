@@ -3,8 +3,8 @@
 
 using System;
 using System.Globalization;
-using MyNet.Utilities.Extensions;
 using MyNet.Humanizer.DateTimes;
+using MyNet.Utilities.Localization;
 using MyNet.Utilities.Units;
 
 namespace MyNet.Humanizer
@@ -12,20 +12,6 @@ namespace MyNet.Humanizer
     public static class DateTimeHumanizeExtensions
     {
         static DateTimeHumanizeExtensions() => ResourceLocator.Initialize();
-
-        // http://stackoverflow.com/questions/11/how-do-i-calculate-relative-time
-        /// <summary>
-        /// Calculates the distance of time in words between two provided dates
-        /// </summary>
-        public static string? Humanize(this DateTime? input, DateTime? dateToCompareAgainst = null, TimeUnit unitMin = TimeUnit.Second, TimeUnit unitMax = TimeUnit.Year, bool utcDate = true)
-            => Humanize(input, CultureInfo.CurrentCulture, dateToCompareAgainst, unitMin, unitMax, utcDate);
-
-        // http://stackoverflow.com/questions/11/how-do-i-calculate-relative-time
-        /// <summary>
-        /// Calculates the distance of time in words between two provided dates
-        /// </summary>
-        public static string? Humanize(this DateTime input, DateTime? dateToCompareAgainst = null, TimeUnit unitMin = TimeUnit.Second, TimeUnit unitMax = TimeUnit.Year, bool utcDate = true)
-            => Humanize(input, CultureInfo.CurrentCulture, dateToCompareAgainst, unitMin, unitMax, utcDate);
 
         /// <summary>
         /// Turns the current or provided date into a human readable sentence, overload for the nullable DateTime, returning 'never' in case null
@@ -37,15 +23,16 @@ namespace MyNet.Humanizer
         /// <param name="unitMax"></param>
         /// <param name="culture">Culture to use. If null, current thread's UI culture is used.</param>
         /// <returns>distance of time in words</returns>
-        public static string? Humanize(this DateTime? input, CultureInfo culture, DateTime? dateToCompareAgainst = null, TimeUnit unitMin = TimeUnit.Second, TimeUnit unitMax = TimeUnit.Year, bool utcDate = true) => input.HasValue
-                ? Humanize(input.Value, culture, dateToCompareAgainst, unitMin, unitMax, utcDate)
-                : culture.GetProvider<IDateTimeFormatter>()?.Never();
+        public static string? Humanize(this DateTime? input, DateTime? dateToCompareAgainst = null, TimeUnit unitMin = TimeUnit.Second, TimeUnit unitMax = TimeUnit.Year, bool utcDate = true, CultureInfo? culture = null)
+            => input.HasValue
+                ? Humanize(input.Value, dateToCompareAgainst, unitMin, unitMax, utcDate, culture)
+                : LocalizationService.GetOrCurrent<IDateTimeFormatter>()?.Never();
 
         // http://stackoverflow.com/questions/11/how-do-i-calculate-relative-time
         /// <summary>
         /// Calculates the distance of time in words between two provided dates
         /// </summary>
-        public static string? Humanize(this DateTime input, CultureInfo culture, DateTime? dateToCompareAgainst = null, TimeUnit unitMin = TimeUnit.Second, TimeUnit unitMax = TimeUnit.Year, bool utcDate = true)
+        public static string Humanize(this DateTime input, DateTime? dateToCompareAgainst = null, TimeUnit unitMin = TimeUnit.Second, TimeUnit unitMax = TimeUnit.Year, bool utcDate = true, CultureInfo? culture = null)
         {
             var comparisonBase = dateToCompareAgainst ?? DateTime.UtcNow;
 
@@ -61,7 +48,7 @@ namespace MyNet.Humanizer
         /// <summary>
         /// Calculates the distance of time in words between two provided dates
         /// </summary>
-        public static string? Humanize(this DateTime input, DateTime comparisonBase, TimeUnit unitMin, TimeUnit unitMax, CultureInfo culture)
+        public static string Humanize(this DateTime input, DateTime comparisonBase, TimeUnit unitMin, TimeUnit unitMax, CultureInfo? culture = null)
         {
             var ts = new TimeSpan(Math.Abs(comparisonBase.Ticks - input.Ticks));
 
@@ -98,16 +85,13 @@ namespace MyNet.Humanizer
         /// <summary>
         /// Calculates the distance of time in words between two provided dates
         /// </summary>
-        public static string? Humanize(DateTime input, DateTime comparisonBase, TimeUnit timeUnit) => Humanize(input, comparisonBase, timeUnit, CultureInfo.CurrentCulture);
-
-        // http://stackoverflow.com/questions/11/how-do-i-calculate-relative-time
-        /// <summary>
-        /// Calculates the distance of time in words between two provided dates
-        /// </summary>
-        public static string? Humanize(DateTime input, DateTime comparisonBase, TimeUnit timeUnit, CultureInfo culture)
+        public static string Humanize(DateTime input, DateTime comparisonBase, TimeUnit timeUnit, CultureInfo? culture = null)
         {
             var tense = input > comparisonBase ? Tense.Future : Tense.Past;
-            var formatter = culture.GetProvider<IDateTimeFormatter>();
+            var formatter = LocalizationService.GetOrCurrent<IDateTimeFormatter>(culture);
+
+            if (formatter is null) return string.Empty;
+
             var ts = new TimeSpan(Math.Abs(comparisonBase.Ticks - input.Ticks));
 
             var count = 0;
@@ -146,16 +130,14 @@ namespace MyNet.Humanizer
                     break;
             }
 
-            return count > 0 ? formatter?.DateHumanize(tense, timeUnit, count) : formatter?.Now();
+            return count > 0 ? formatter.DateHumanize(tense, timeUnit, count) : formatter.Now();
         }
 
-        public static string? ToMonthAbbreviated(this DateTime date) => ToMonthAbbreviated(date, CultureInfo.CurrentCulture);
-
-        public static string? ToMonthAbbreviated(this DateTime date, CultureInfo culture)
+        public static string ToMonthAbbreviated(this DateTime date, CultureInfo? culture = null)
         {
             var result = string.Empty;
 
-            var monthNames = culture.DateTimeFormat.AbbreviatedMonthNames;
+            var monthNames = (culture ?? GlobalizationService.Current.Culture).DateTimeFormat.AbbreviatedMonthNames;
             if (monthNames != null && monthNames.Length > 0)
             {
                 result = monthNames[(date.Month - 1) % monthNames.Length];
