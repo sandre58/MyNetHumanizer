@@ -15,6 +15,6 @@ namespace MyNet.Humanizer.Transformer
         /// </summary>
         /// <param name="input">String to be transformed</param>
         /// <returns></returns>
-        string Transform(string input, CultureInfo cultureInfo);
+        string Transform(string input, CultureInfo culture);
     }
 }

@@ -30,7 +30,7 @@ namespace MyNet.Humanizer
         /// <param name="collectionSeparator">The separator to use when combining humanized time parts. If null, the default collection formatter for the current culture is used.</param>
         /// <param name="lastSeparator"></param>
         /// <returns></returns>
-        public static string? Humanize(this TimeSpan timeSpan, int precision = 1, TimeUnit maxUnit = TimeUnit.Year, TimeUnit minUnit = TimeUnit.Millisecond, string collectionSeparator = ", ", string? lastSeparator = null, CultureInfo? cultureInfo = null) => timeSpan.Humanize(precision, false, maxUnit, minUnit, collectionSeparator, lastSeparator, cultureInfo);
+        public static string? Humanize(this TimeSpan timeSpan, int precision = 1, TimeUnit maxUnit = TimeUnit.Year, TimeUnit minUnit = TimeUnit.Millisecond, string collectionSeparator = ", ", string? lastSeparator = null, CultureInfo? culture = null) => timeSpan.Humanize(precision, false, maxUnit, minUnit, collectionSeparator, lastSeparator, culture);
 
         /// <summary>
         /// Turns a TimeSpan into a human readable form. E.g. 1 day.
@@ -44,17 +44,17 @@ namespace MyNet.Humanizer
         /// <param name="collectionSeparator">The separator to use when combining humanized time parts. If null, the default collection formatter for the current culture is used.</param>
         /// <param name="lastSeparator"></param>
         /// <returns></returns>
-        public static string? Humanize(this TimeSpan timeSpan, int precision, bool countEmptyUnits, TimeUnit maxUnit = TimeUnit.Year, TimeUnit minUnit = TimeUnit.Millisecond, string collectionSeparator = ", ", string? lastSeparator = null, CultureInfo? cultureInfo = null)
+        public static string? Humanize(this TimeSpan timeSpan, int precision, bool countEmptyUnits, TimeUnit maxUnit = TimeUnit.Year, TimeUnit minUnit = TimeUnit.Millisecond, string collectionSeparator = ", ", string? lastSeparator = null, CultureInfo? culture = null)
         {
-            IEnumerable<string> timeParts = CreateTheTimePartsWithUpperAndLowerLimits(timeSpan, maxUnit, minUnit, cultureInfo);
+            IEnumerable<string> timeParts = CreateTheTimePartsWithUpperAndLowerLimits(timeSpan, maxUnit, minUnit, culture);
             timeParts = SetPrecisionOfTimeSpan(timeParts, precision, countEmptyUnits);
 
             return ConcatenateTimeSpanParts(timeParts, collectionSeparator, lastSeparator);
         }
 
-        private static List<string> CreateTheTimePartsWithUpperAndLowerLimits(TimeSpan timespan, TimeUnit maxUnit, TimeUnit minUnit, CultureInfo? cultureInfo = null)
+        private static List<string> CreateTheTimePartsWithUpperAndLowerLimits(TimeSpan timespan, TimeUnit maxUnit, TimeUnit minUnit, CultureInfo? culture = null)
         {
-            var cultureFormatter = LocalizationService.GetOrCurrent<IDateTimeFormatter>(cultureInfo);
+            var cultureFormatter = LocalizationService.GetOrCurrent<IDateTimeFormatter>(culture);
             var firstValueFound = false;
             var timeUnitsEnumTypes = GetEnumTypesForTimeUnit();
             var timeParts = new List<string>();

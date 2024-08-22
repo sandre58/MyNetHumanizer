@@ -47,7 +47,7 @@ namespace MyNet.Humanizer
                             .OfType<Enum>()
                             .FirstOrDefault(value =>
                                 string.Equals(value.ToString(), input, StringComparison.OrdinalIgnoreCase)
-                                || string.Equals(value.Humanize(cultureInfo: culture), input, StringComparison.OrdinalIgnoreCase));
+                                || string.Equals(value.Humanize(culture: culture), input, StringComparison.OrdinalIgnoreCase));
 
             return match == null && onNoMatch == OnNoMatch.ThrowsException
                 ? throw new NoMatchFoundException("Couldn't find any enum member that matches the string " + input)
