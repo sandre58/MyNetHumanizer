@@ -17,6 +17,7 @@ namespace MyNet.Humanizer
         /// </summary>
         /// <param name="input"></param>
         /// <param name="casing"></param>
+        /// <param name="culture"></param>
         /// <returns></returns>
         public static string ApplyCase(this string input, LetterCasing casing, CultureInfo? culture = null) => casing switch
         {

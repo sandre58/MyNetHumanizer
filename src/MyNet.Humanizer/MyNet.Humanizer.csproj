@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MyNet.Utilities" Version="4.1.0-alpha.16" />
+    <PackageReference Include="MyNet.Utilities" Version="5.0.0-pre" />
   </ItemGroup>
 
   <ItemGroup>

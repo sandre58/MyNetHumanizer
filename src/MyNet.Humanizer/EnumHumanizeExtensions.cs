@@ -54,6 +54,7 @@ namespace MyNet.Humanizer
         /// </summary>
         /// <param name="input">The enum member to be humanized</param>
         /// <param name="casing">The casing to use for humanizing the enum member</param>
+        /// <param name="culture"></param>
         /// <returns></returns>
         public static string? Humanize(this Enum input, LetterCasing casing, CultureInfo? culture = null)
         {

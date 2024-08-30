@@ -18,6 +18,7 @@ namespace MyNet.Humanizer
         /// <typeparam name="TTargetEnum">The target enum</typeparam>
         /// <param name="input">The string to be converted</param>
         /// <param name="onNoMatch"></param>
+        /// <param name="culture"></param>
         /// <exception cref="ArgumentException">If TTargetEnum is not an enum</exception>
         /// <exception cref="NoMatchFoundException">Couldn't find any enum member that matches the string</exception>
         /// <returns></returns>
@@ -30,6 +31,7 @@ namespace MyNet.Humanizer
         /// <param name="input">The string to be converted</param>
         /// <param name="targetEnum">The target enum</param>
         /// <param name="onNoMatch">What to do when input is not matched to the enum.</param>
+        /// <param name="culture"></param>
         /// <returns></returns>
         /// <exception cref="NoMatchFoundException">Couldn't find any enum member that matches the string</exception>
         /// <exception cref="ArgumentException">If targetEnum is not an enum</exception>
