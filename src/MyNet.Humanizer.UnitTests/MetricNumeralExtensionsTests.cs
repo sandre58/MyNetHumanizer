@@ -10,6 +10,7 @@ using Xunit;
 namespace MyNet.Humanizer.UnitTests
 {
     [UseCulture("en-US")]
+    [Collection("UseCultureSequential")]
     public class MetricNumeralExtensionsTests
     {
         // Return a sequence of -24 -> 26

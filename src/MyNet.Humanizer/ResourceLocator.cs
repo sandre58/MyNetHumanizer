@@ -20,16 +20,16 @@ namespace MyNet.Humanizer
             TranslationService.RegisterResources(nameof(DateHumanizeResources), DateHumanizeResources.ResourceManager);
             TranslationService.RegisterResources(nameof(EnumHumanizeResources), EnumHumanizeResources.ResourceManager);
 
-            TranslationService.AddDefaultProvider<IInflector, DefaultInflector>();
-            TranslationService.AddDefaultProvider<IOrdinalizer, DefaultOrdinalizer>();
+            LocalizationService.Register<IInflector, DefaultInflector>();
+            LocalizationService.Register<IOrdinalizer, DefaultOrdinalizer>();
 
-            _ = TranslationService.Get(Cultures.English).AddProvider<IInflector, EnglishInflector>()
-                                                    .AddProvider<IOrdinalizer, EnglishOrdinalizer>()
-                                                    .AddProvider<IDateTimeFormatter, EnglishDateTimeFormatter>();
+            LocalizationService.Register<IInflector, EnglishInflector>(Cultures.English);
+            LocalizationService.Register<IOrdinalizer, EnglishOrdinalizer>(Cultures.English);
+            LocalizationService.Register<IDateTimeFormatter, EnglishDateTimeFormatter>(Cultures.English);
 
-            _ = TranslationService.Get(Cultures.French).AddProvider<IInflector, FrenchInflector>()
-                                                    .AddProvider<IOrdinalizer, FrenchOrdinalizer>()
-                                                    .AddProvider<IDateTimeFormatter, FrenchDateTimeFormatter>();
+            LocalizationService.Register<IInflector, FrenchInflector>(Cultures.French);
+            LocalizationService.Register<IOrdinalizer, FrenchOrdinalizer>(Cultures.French);
+            LocalizationService.Register<IDateTimeFormatter, FrenchDateTimeFormatter>(Cultures.French);
 
             _isInitialized = true;
         }

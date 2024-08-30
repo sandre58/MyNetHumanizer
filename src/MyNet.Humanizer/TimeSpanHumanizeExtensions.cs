@@ -5,10 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using MyNet.Utilities.Extensions;
 using MyNet.Humanizer.DateTimes;
-using MyNet.Utilities.Units;
 using MyNet.Utilities;
+using MyNet.Utilities.Localization;
+using MyNet.Utilities.Units;
 
 namespace MyNet.Humanizer
 {
@@ -17,7 +17,6 @@ namespace MyNet.Humanizer
     /// </summary>
     public static class TimeSpanHumanizeExtensions
     {
-
         static TimeSpanHumanizeExtensions() => ResourceLocator.Initialize();
 
         /// <summary>
@@ -25,40 +24,13 @@ namespace MyNet.Humanizer
         /// </summary>
         /// <param name="timeSpan"></param>
         /// <param name="precision">The maximum number of time units to return. Defaulted is 1 which means the largest unit is returned</param>
-        /// <param name="maxUnit">The maximum unit of time to output. The default value is <see cref="TimeUnit.Week"/>. The time units <see cref="TimeUnit.Month"/> and <see cref="TimeUnit.Year"/> will give approximations for time spans bigger 30 days by calculating with 365.2425 days a year and 30.4369 days a month.</param>
-        /// <param name="minUnit">The minimum unit of time to output.</param>
-        /// <param name="collectionSeparator">The separator to use when combining humanized time parts. If null, the default collection formatter for the current culture is used.</param>
-        /// <param name="lastSeparator"></param>
-        /// <returns></returns>
-        public static string? Humanize(this TimeSpan timeSpan, int precision = 1, TimeUnit maxUnit = TimeUnit.Year, TimeUnit minUnit = TimeUnit.Millisecond, string collectionSeparator = ", ", string? lastSeparator = null)
-            => Humanize(timeSpan, CultureInfo.CurrentCulture, precision, maxUnit, minUnit, collectionSeparator, lastSeparator);
-
-        /// <summary>
-        /// Turns a TimeSpan into a human readable form. E.g. 1 day.
-        /// </summary>
-        /// <param name="timeSpan"></param>
-        /// <param name="precision">The maximum number of time units to return.</param>
-        /// <param name="countEmptyUnits">Controls whether empty time units should be counted towards maximum number of time units. Leading empty time units never count.</param>
-        /// <param name="maxUnit">The maximum unit of time to output. The default value is <see cref="TimeUnit.Week"/>. The time units <see cref="TimeUnit.Month"/> and <see cref="TimeUnit.Year"/> will give approximations for time spans bigger than 30 days by calculating with 365.2425 days a year and 30.4369 days a month.</param>
-        /// <param name="minUnit">The minimum unit of time to output.</param>
-        /// <param name="collectionSeparator">The separator to use when combining humanized time parts. If null, the default collection formatter for the current culture is used.</param>
-        /// <param name="lastSeparator"></param>
-        /// <returns></returns>
-        public static string? Humanize(this TimeSpan timeSpan, int precision, bool countEmptyUnits, TimeUnit maxUnit = TimeUnit.Year, TimeUnit minUnit = TimeUnit.Millisecond, string collectionSeparator = ", ", string? lastSeparator = null)
-            => Humanize(timeSpan, CultureInfo.CurrentCulture, precision, countEmptyUnits, maxUnit, minUnit, collectionSeparator, lastSeparator);
-
-        /// <summary>
-        /// Turns a TimeSpan into a human readable form. E.g. 1 day.
-        /// </summary>
-        /// <param name="timeSpan"></param>
-        /// <param name="precision">The maximum number of time units to return. Defaulted is 1 which means the largest unit is returned</param>
         /// <param name="culture">Culture to use. If null, current thread's UI culture is used.</param>
         /// <param name="maxUnit">The maximum unit of time to output. The default value is <see cref="TimeUnit.Week"/>. The time units <see cref="TimeUnit.Month"/> and <see cref="TimeUnit.Year"/> will give approximations for time spans bigger 30 days by calculating with 365.2425 days a year and 30.4369 days a month.</param>
         /// <param name="minUnit">The minimum unit of time to output.</param>
         /// <param name="collectionSeparator">The separator to use when combining humanized time parts. If null, the default collection formatter for the current culture is used.</param>
         /// <param name="lastSeparator"></param>
         /// <returns></returns>
-        public static string? Humanize(this TimeSpan timeSpan, CultureInfo culture, int precision = 1, TimeUnit maxUnit = TimeUnit.Year, TimeUnit minUnit = TimeUnit.Millisecond, string collectionSeparator = ", ", string? lastSeparator = null) => timeSpan.Humanize(culture, precision, false, maxUnit, minUnit, collectionSeparator, lastSeparator);
+        public static string? Humanize(this TimeSpan timeSpan, int precision = 1, TimeUnit maxUnit = TimeUnit.Year, TimeUnit minUnit = TimeUnit.Millisecond, string collectionSeparator = ", ", string? lastSeparator = null, CultureInfo? culture = null) => timeSpan.Humanize(precision, false, maxUnit, minUnit, collectionSeparator, lastSeparator, culture);
 
         /// <summary>
         /// Turns a TimeSpan into a human readable form. E.g. 1 day.
@@ -72,17 +44,17 @@ namespace MyNet.Humanizer
         /// <param name="collectionSeparator">The separator to use when combining humanized time parts. If null, the default collection formatter for the current culture is used.</param>
         /// <param name="lastSeparator"></param>
         /// <returns></returns>
-        public static string? Humanize(this TimeSpan timeSpan, CultureInfo culture, int precision, bool countEmptyUnits, TimeUnit maxUnit = TimeUnit.Year, TimeUnit minUnit = TimeUnit.Millisecond, string collectionSeparator = ", ", string? lastSeparator = null)
+        public static string? Humanize(this TimeSpan timeSpan, int precision, bool countEmptyUnits, TimeUnit maxUnit = TimeUnit.Year, TimeUnit minUnit = TimeUnit.Millisecond, string collectionSeparator = ", ", string? lastSeparator = null, CultureInfo? culture = null)
         {
-            IEnumerable<string> timeParts = CreateTheTimePartsWithUpperAndLowerLimits(timeSpan, culture, maxUnit, minUnit);
+            IEnumerable<string> timeParts = CreateTheTimePartsWithUpperAndLowerLimits(timeSpan, maxUnit, minUnit, culture);
             timeParts = SetPrecisionOfTimeSpan(timeParts, precision, countEmptyUnits);
 
             return ConcatenateTimeSpanParts(timeParts, collectionSeparator, lastSeparator);
         }
 
-        private static List<string> CreateTheTimePartsWithUpperAndLowerLimits(TimeSpan timespan, CultureInfo culture, TimeUnit maxUnit, TimeUnit minUnit)
+        private static List<string> CreateTheTimePartsWithUpperAndLowerLimits(TimeSpan timespan, TimeUnit maxUnit, TimeUnit minUnit, CultureInfo? culture = null)
         {
-            var cultureFormatter = culture.GetProvider<IDateTimeFormatter>();
+            var cultureFormatter = LocalizationService.GetOrCurrent<IDateTimeFormatter>(culture);
             var firstValueFound = false;
             var timeUnitsEnumTypes = GetEnumTypesForTimeUnit();
             var timeParts = new List<string>();

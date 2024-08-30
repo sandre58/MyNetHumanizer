@@ -8,7 +8,7 @@ namespace MyNet.Humanizer.UnitTests
     public class DehumanizeToEnumTests
     {
         [Fact]
-        public void ThrowsForEnumNoMatch() => _ = Assert.Throws<NoMatchFoundException>(() => EnumTestsResources.MemberWithDescriptionAttribute.DehumanizeTo<Dummy>());
+        public void ThrowsForEnumNoMatch() => _ = Assert.Throws<NoMatchFoundException>(() => EnumTestsResources.MemberWithDescriptionAttribute.DehumanizeTo<Dummy>(onNoMatch: OnNoMatch.ThrowsException));
 
         [Fact]
         public void DehumanizeMembersWithoutDescriptionAttribute() => Assert.Equal(EnumUnderTest.MemberWithoutDescriptionAttribute, EnumUnderTest.MemberWithoutDescriptionAttribute.ToString().DehumanizeTo<EnumUnderTest>());

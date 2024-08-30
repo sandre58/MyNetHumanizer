@@ -15,6 +15,7 @@ namespace MyNet.Humanizer.UnitTests
     }
 
     [UseCulture("en")]
+    [Collection("UseCultureSequential")]
     public class CollectionHumanizeTests
     {
         [Fact]
@@ -104,7 +105,6 @@ namespace MyNet.Humanizer.UnitTests
         public void HumanizeHandlesNullItemsWithoutAnException() => Assert.Null(Record.Exception(() => new object?[] { null, null }.Humanize(", ", "and")));
 
         [Fact]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1861:Avoid constant arrays as arguments", Justification = "It's for Unit Tests")]
         public void HumanizeHandlesNullStringDisplayFormatterReturnsWithoutAnException() => Assert.Null(Record.Exception(() => new[] { "A", "B", "C" }.Humanize(_ => null, ", ", "and")));
 
         [Fact]
@@ -114,11 +114,9 @@ namespace MyNet.Humanizer.UnitTests
         public void HumanizeRunsObjectDisplayFormatterOnNulls() => Assert.Equal("1, 2 and 3", new int?[] { 1, null, 3 }.Humanize(_ => _ ?? 2, ", ", "and"));
 
         [Fact]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1861:Avoid constant arrays as arguments", Justification = "It's for Unit Tests")]
         public void HumanizeRemovesEmptyItemsByDefault() => Assert.Equal("A and C", new[] { "A", " ", "C" }.Humanize(DummyFormatter, ", ", "and"));
 
         [Fact]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1861:Avoid constant arrays as arguments", Justification = "It's for Unit Tests")]
         public void HumanizeTrimsItemsByDefault() => Assert.Equal("A, B and C", new[] { "A", "  B  ", "C" }.Humanize(DummyFormatter, ", ", "and"));
 
         private static readonly Func<string, string> DummyFormatter = input => input;

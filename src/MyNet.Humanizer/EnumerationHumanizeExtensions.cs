@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Stéphane ANDRE. All Right Reserved.
 // See the LICENSE file in the project root for more information.
 
+using System.Globalization;
 using MyNet.Utilities;
 using MyNet.Utilities.Extensions;
 
@@ -13,9 +14,9 @@ namespace MyNet.Humanizer
     {
         static EnumerationHumanizeExtensions() => ResourceLocator.Initialize();
 
-        public static string? Humanize(this IEnumeration value, bool abbreviation = false)
+        public static string? Humanize(this IEnumeration value, bool abbreviation = false, CultureInfo? culture = null)
         {
-            var result = value.ResourceKey.Translate(abbreviation);
+            var result = abbreviation ? value.ResourceKey.TranslateAbbreviated(culture) : value.ResourceKey.Translate(culture);
 
             return result == value.ResourceKey ? value.ToString()?.Humanize() : result;
         }
@@ -26,9 +27,9 @@ namespace MyNet.Humanizer
         /// <param name="input">The enum member to be humanized</param>
         /// <param name="casing">The casing to use for humanizing the enum member</param>
         /// <returns></returns>
-        public static string? Humanize(this IEnumeration input, LetterCasing casing)
+        public static string? Humanize(this IEnumeration input, LetterCasing casing, CultureInfo? culture = null)
         {
-            var humanizedEnum = input.Humanize();
+            var humanizedEnum = input.Humanize(culture: culture);
 
             return humanizedEnum?.ApplyCase(casing);
         }

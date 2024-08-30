@@ -9,6 +9,7 @@ using System.Linq;
 using System.Resources;
 using MyNet.Utilities;
 using MyNet.Utilities.Extensions;
+using MyNet.Utilities.Localization;
 
 namespace MyNet.Humanizer
 {
@@ -23,13 +24,13 @@ namespace MyNet.Humanizer
         /// Turns an enum member into a human readable string; e.g. AnonymousUser -> Anonymous user. It also honors DescriptionAttribute data annotation
         /// </summary>
         /// <returns></returns>
-        public static string? Humanize(this Enum value, bool abbreviation = false)
+        public static string? Humanize(this Enum value, bool abbreviation = false, CultureInfo? culture = null)
         {
             var displayAttr = value.GetAttribute<DisplayAttribute>();
             if (displayAttr != null)
             {
                 if (displayAttr.ResourceType != null)
-                    return new ResourceManager(displayAttr.ResourceType).GetString(displayAttr.Name ?? displayAttr.Description ?? string.Empty, CultureInfo.CurrentCulture);
+                    return new ResourceManager(displayAttr.ResourceType).GetString(displayAttr.Name ?? displayAttr.Description ?? string.Empty, culture ?? GlobalizationService.Current.Culture);
 
                 if (!string.IsNullOrEmpty(displayAttr.Description))
                     return displayAttr.Description;
@@ -43,7 +44,7 @@ namespace MyNet.Humanizer
                 return descAttr.Description;
 
             var resourceName = value.GetType().Name + value.ToString();
-            var result = resourceName.Translate(abbreviation);
+            var result = abbreviation ? resourceName.TranslateAbbreviated(culture) : resourceName.Translate(culture);
 
             return result == resourceName ? value.ToString().Humanize() : result;
         }
@@ -53,10 +54,11 @@ namespace MyNet.Humanizer
         /// </summary>
         /// <param name="input">The enum member to be humanized</param>
         /// <param name="casing">The casing to use for humanizing the enum member</param>
+        /// <param name="culture"></param>
         /// <returns></returns>
-        public static string? Humanize(this Enum input, LetterCasing casing)
+        public static string? Humanize(this Enum input, LetterCasing casing, CultureInfo? culture = null)
         {
-            var humanizedEnum = input.Humanize();
+            var humanizedEnum = input.Humanize(culture: culture);
 
             return humanizedEnum?.ApplyCase(casing);
         }

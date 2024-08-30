@@ -2,13 +2,14 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace MyNet.Humanizer.Transformer
 {
     internal partial class ToTitleCase : IStringTransformer
     {
-        public string Transform(string input)
+        public string Transform(string input, CultureInfo culture)
         {
             var result = input;
 

@@ -3,8 +3,6 @@
 
 using System;
 using System.Globalization;
-using MyNet.Utilities.Extensions;
-using MyNet.Humanizer.Inflections;
 
 namespace MyNet.Humanizer
 {
@@ -82,8 +80,8 @@ namespace MyNet.Humanizer
 
         private static string? ToQuantity(this string input, long quantity, ShowQuantityAs showQuantityAs = ShowQuantityAs.Numeric, string? format = null, IFormatProvider? formatProvider = null)
         {
-            var isPlural = CultureInfo.CurrentCulture.GetProvider<IInflector>()?.IsPlural(quantity);
-            var transformedInput = isPlural != null && !isPlural.Value
+            var isPlural = quantity.IsPlural(formatProvider as CultureInfo);
+            var transformedInput = !isPlural
                 ? input.Singularize(inputIsKnownToBePlural: false)
                 : input.Pluralize(inputIsKnownToBeSingular: false);
 
@@ -109,8 +107,8 @@ namespace MyNet.Humanizer
         /// <returns></returns>
         public static string? ToQuantity(this string input, double quantity, string? format = null, IFormatProvider? formatProvider = null)
         {
-            var isPlural = CultureInfo.CurrentCulture.GetProvider<IInflector>()?.IsPlural(quantity);
-            var transformedInput = isPlural != null && !isPlural.Value
+            var isPlural = quantity.IsPlural(formatProvider as CultureInfo);
+            var transformedInput = !isPlural
                 ? input.Singularize(inputIsKnownToBePlural: false)
                 : input.Pluralize(inputIsKnownToBeSingular: false);
 

@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Stéphane ANDRE. All Right Reserved.
 // See the LICENSE file in the project root for more information.
 
+using System.Globalization;
+
 namespace MyNet.Humanizer.Transformer
 {
     /// <summary>
@@ -12,7 +14,8 @@ namespace MyNet.Humanizer.Transformer
         /// Transform the input
         /// </summary>
         /// <param name="input">String to be transformed</param>
+        /// <param name="culture"></param>
         /// <returns></returns>
-        string Transform(string input);
+        string Transform(string input, CultureInfo culture);
     }
 }

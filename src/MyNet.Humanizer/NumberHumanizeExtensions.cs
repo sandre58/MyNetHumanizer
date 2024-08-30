@@ -4,7 +4,6 @@
 using System;
 using System.Globalization;
 using MyNet.Utilities.Extensions;
-using MyNet.Humanizer.Inflections;
 using MyNet.Utilities;
 
 namespace MyNet.Humanizer
@@ -16,36 +15,36 @@ namespace MyNet.Humanizer
 
         static NumberHumanizeExtensions() => ResourceLocator.Initialize();
 
-        public static string? Humanize<T, TUnit>(this T value, TUnit unit, TUnit? minUnit = default, TUnit? maxUnit = default, bool abbreviation = true, string? format = null)
+        public static string? Humanize<T, TUnit>(this T value, TUnit unit, TUnit? minUnit = default, TUnit? maxUnit = default, bool abbreviation = true, string? format = null, CultureInfo? culture = null)
             where T : struct, IComparable<T>
             where TUnit : Enum
-            => Humanize(value, unit.GetType(), unit, minUnit, maxUnit, abbreviation, format);
+            => Humanize(value, unit.GetType(), unit, minUnit, maxUnit, abbreviation, format, culture);
 
-        public static string? Humanize<T>(this T value, Type type, Enum unit, Enum? minUnit = null, Enum? maxUnit = null, bool abbreviation = true, string? format = null)
+        public static string? Humanize<T>(this T value, Type type, Enum unit, Enum? minUnit = null, Enum? maxUnit = null, bool abbreviation = true, string? format = null, CultureInfo? culture = null)
             where T : struct, IComparable<T>
         {
             var (newValue, newUnit) = value.Simplify(type, unit, minUnit, maxUnit);
 
-            return Humanize(newValue, type, newUnit, abbreviation, format);
+            return Humanize(newValue, type, newUnit, abbreviation, format, culture);
         }
 
-        public static string? Humanize<T, TUnit>(this T value, TUnit unit, bool abbreviation = true, string? format = null)
+        public static string? Humanize<T, TUnit>(this T value, TUnit unit, bool abbreviation = true, string? format = null, CultureInfo? culture = null)
             where T : struct, IComparable<T>
             where TUnit : Enum
-            => Humanize(value, unit.GetType(), unit, abbreviation, format);
+            => Humanize(value, unit.GetType(), unit, abbreviation, format, culture);
 
-        public static string? Humanize<T>(this T value, Type type, Enum unit, bool abbreviation = true, string? format = null)
+        public static string? Humanize<T>(this T value, Type type, Enum unit, bool abbreviation = true, string? format = null, CultureInfo? culture = null)
             where T : struct, IComparable<T>
         {
             if (double.TryParse(value.ToString(), out var dbl))
             {
                 var input = type.Name + unit;
                 var isInt = value is int;
-                var transformedInput = input.Translate(abbreviation);
+                var transformedInput = abbreviation ? input.TranslateAbbreviated(culture) : input.Translate(culture);
                 if (!abbreviation)
                 {
-                    var isPlural = CultureInfo.CurrentCulture.GetProvider<IInflector>()?.IsPlural(dbl);
-                    transformedInput = isPlural != null && !isPlural.Value
+                    var isPlural = dbl.IsPlural(culture);
+                    transformedInput = !isPlural
                         ? transformedInput?.Singularize(inputIsKnownToBePlural: false)
                         : transformedInput?.Pluralize(inputIsKnownToBeSingular: false);
                 }
