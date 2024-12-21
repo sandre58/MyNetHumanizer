@@ -79,7 +79,7 @@ namespace MyNet.Humanizer
 
         private static IEnumerable<TimeUnit> GetEnumTypesForTimeUnit()
         {
-            var enumTypeEnumerator = (IEnumerable<TimeUnit>)Enum.GetValues(typeof(TimeUnit));
+            var enumTypeEnumerator = Enum.GetValues<TimeUnit>();
             return enumTypeEnumerator.Reverse();
         }
 

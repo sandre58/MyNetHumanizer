@@ -7,11 +7,19 @@ using MyNet.Utilities.Units;
 using MyNet.Humanizer.DateTimes;
 using Xunit;
 
+#if NET9_0_OR_GREATER
+using System.Threading;
+#endif
+
 namespace MyNet.Humanizer.UnitTests
 {
     public static class DateTimeHumanize
     {
+#if NET9_0_OR_GREATER
+        private static readonly Lock LockObject = new();
+#else
         private static readonly object LockObject = new();
+#endif
 
         private static void VerifyWithCurrentDate(string expectedString, string expectedCultureName, TimeSpan deltaFromNow, CultureInfo? culture)
         {

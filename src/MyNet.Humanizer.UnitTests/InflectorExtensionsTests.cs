@@ -39,6 +39,7 @@ namespace MyNet.Humanizer.UnitTests
 
         [Theory, UseCulture("fr-FR")]
         [ClassData(typeof(FrenchPluralTestSource))]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S4144:Methods should not have identical implementations", Justification = "Culture changes")]
         public void PluralizeWordsWithUnknownPluralityFrench(string singular, string plural)
         {
             Assert.Equal(plural, plural.Pluralize(false));
@@ -51,6 +52,7 @@ namespace MyNet.Humanizer.UnitTests
 
         [Theory, UseCulture("fr-FR")]
         [ClassData(typeof(FrenchPluralTestSource))]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S4144:Methods should not have identical implementations", Justification = "Culture changes")]
         public void SingularizeWordsWithUnknownSingularityFrench(string singular, string plural)
         {
             Assert.Equal(singular, singular.Singularize(false));
