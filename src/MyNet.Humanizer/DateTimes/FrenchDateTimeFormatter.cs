@@ -1,12 +1,15 @@
-﻿// Copyright (c) Stéphane ANDRE. All Right Reserved.
-// See the LICENSE file in the project root for more information.
+﻿// -----------------------------------------------------------------------
+// <copyright file="FrenchDateTimeFormatter.cs" company="Stéphane ANDRE">
+// Copyright (c) Stéphane ANDRE. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 using MyNet.Utilities.Localization;
 
-namespace MyNet.Humanizer.DateTimes
+namespace MyNet.Humanizer.DateTimes;
+
+public class FrenchDateTimeFormatter : DateTimeFormatter
 {
-    public class FrenchDateTimeFormatter : DateTimeFormatter
-    {
-        public FrenchDateTimeFormatter() : base(Cultures.French) { }
-    }
+    public FrenchDateTimeFormatter()
+        : base(Cultures.French) { }
 }

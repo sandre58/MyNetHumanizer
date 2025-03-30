@@ -1,15 +1,17 @@
-﻿// Copyright (c) Stéphane ANDRE. All Right Reserved.
-// See the LICENSE file in the project root for more information.
+﻿// -----------------------------------------------------------------------
+// <copyright file="RegexOptionsUtil.cs" company="Stéphane ANDRE">
+// Copyright (c) Stéphane ANDRE. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 using System;
 using System.Text.RegularExpressions;
 
-namespace MyNet.Humanizer
-{
-    internal static class RegexOptionsUtil
-    {
-        static RegexOptionsUtil() => Compiled = Enum.TryParse("Compiled", out RegexOptions compiled) ? compiled : RegexOptions.None;
+namespace MyNet.Humanizer;
 
-        public static RegexOptions Compiled { get; }
-    }
+internal static class RegexOptionsUtil
+{
+    static RegexOptionsUtil() => Compiled = Enum.TryParse("Compiled", out RegexOptions compiled) ? compiled : RegexOptions.None;
+
+    public static RegexOptions Compiled { get; }
 }

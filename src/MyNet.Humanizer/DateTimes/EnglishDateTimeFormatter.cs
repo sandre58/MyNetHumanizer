@@ -1,12 +1,15 @@
-﻿// Copyright (c) Stéphane ANDRE. All Right Reserved.
-// See the LICENSE file in the project root for more information.
+﻿// -----------------------------------------------------------------------
+// <copyright file="EnglishDateTimeFormatter.cs" company="Stéphane ANDRE">
+// Copyright (c) Stéphane ANDRE. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 using MyNet.Utilities.Localization;
 
-namespace MyNet.Humanizer.DateTimes
+namespace MyNet.Humanizer.DateTimes;
+
+public class EnglishDateTimeFormatter : DateTimeFormatter
 {
-    public class EnglishDateTimeFormatter : DateTimeFormatter
-    {
-        public EnglishDateTimeFormatter() : base(Cultures.English) { }
-    }
+    public EnglishDateTimeFormatter()
+        : base(Cultures.English) { }
 }

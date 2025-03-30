@@ -1,31 +1,33 @@
-﻿// Copyright (c) Stéphane ANDRE. All Right Reserved.
-// See the LICENSE file in the project root for more information.
+﻿// -----------------------------------------------------------------------
+// <copyright file="DehumanizeToEnumTests.cs" company="Stéphane ANDRE">
+// Copyright (c) Stéphane ANDRE. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 using Xunit;
 
-namespace MyNet.Humanizer.UnitTests
+namespace MyNet.Humanizer.UnitTests;
+
+public class DehumanizeToEnumTests
 {
-    public class DehumanizeToEnumTests
+    private enum Dummy
     {
-        [Fact]
-        public void ThrowsForEnumNoMatch() => _ = Assert.Throws<NoMatchFoundException>(() => EnumTestsResources.MemberWithDescriptionAttribute.DehumanizeTo<Dummy>(onNoMatch: OnNoMatch.ThrowsException));
+        // ReSharper disable once UnusedMember.Local
+        First,
 
-        [Fact]
-        public void DehumanizeMembersWithoutDescriptionAttribute() => Assert.Equal(EnumUnderTest.MemberWithoutDescriptionAttribute, EnumUnderTest.MemberWithoutDescriptionAttribute.ToString().DehumanizeTo<EnumUnderTest>());
-
-        [Fact]
-        public void AllCapitalMembersAreReturnedAsIs() => Assert.Equal(EnumUnderTest.ALLCAPITALS, EnumUnderTest.ALLCAPITALS.ToString().DehumanizeTo<EnumUnderTest>());
-
-        [Fact]
-        public void HonorsDisplayAttribute() => Assert.Equal(EnumUnderTest.MemberWithDisplayAttribute, EnumUnderTest.MemberWithDisplayAttribute.ToString().DehumanizeTo<EnumUnderTest>());
-
-        private enum Dummy
-        {
-            First,
-            Second
-        }
+        // ReSharper disable once UnusedMember.Local
+        Second
     }
 
+    [Fact]
+    public void ThrowsForEnumNoMatch() => _ = Assert.Throws<NoMatchFoundException>(() => EnumTestsResources.MemberWithDescriptionAttribute.DehumanizeTo<Dummy>(onNoMatch: OnNoMatch.ThrowsException));
 
+    [Fact]
+    public void DehumanizeMembersWithoutDescriptionAttribute() => Assert.Equal(EnumUnderTest.MemberWithoutDescriptionAttribute, EnumUnderTest.MemberWithoutDescriptionAttribute.ToString().DehumanizeTo<EnumUnderTest>());
 
+    [Fact]
+    public void AllCapitalMembersAreReturnedAsIs() => Assert.Equal(EnumUnderTest.ALLCAPITALS, EnumUnderTest.ALLCAPITALS.ToString().DehumanizeTo<EnumUnderTest>());
+
+    [Fact]
+    public void HonorsDisplayAttribute() => Assert.Equal(EnumUnderTest.MemberWithDisplayAttribute, EnumTestsResources.MemberWithDisplayAttribute.DehumanizeTo<EnumUnderTest>());
 }

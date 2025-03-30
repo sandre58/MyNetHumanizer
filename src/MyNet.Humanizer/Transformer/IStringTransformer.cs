@@ -1,21 +1,20 @@
-﻿// Copyright (c) Stéphane ANDRE. All Right Reserved.
-// See the LICENSE file in the project root for more information.
+﻿// -----------------------------------------------------------------------
+// <copyright file="IStringTransformer.cs" company="Stéphane ANDRE">
+// Copyright (c) Stéphane ANDRE. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 using System.Globalization;
 
-namespace MyNet.Humanizer.Transformer
+namespace MyNet.Humanizer.Transformer;
+
+/// <summary>
+/// Can tranform a string.
+/// </summary>
+public interface IStringTransformer
 {
     /// <summary>
-    /// Can tranform a string
+    /// Transform the input.
     /// </summary>
-    public interface IStringTransformer
-    {
-        /// <summary>
-        /// Transform the input
-        /// </summary>
-        /// <param name="input">String to be transformed</param>
-        /// <param name="culture"></param>
-        /// <returns></returns>
-        string Transform(string input, CultureInfo culture);
-    }
+    string Transform(string input, CultureInfo culture);
 }

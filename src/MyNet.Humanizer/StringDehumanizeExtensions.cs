@@ -1,24 +1,25 @@
-﻿// Copyright (c) Stéphane ANDRE. All Right Reserved.
-// See the LICENSE file in the project root for more information.
+﻿// -----------------------------------------------------------------------
+// <copyright file="StringDehumanizeExtensions.cs" company="Stéphane ANDRE">
+// Copyright (c) Stéphane ANDRE. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 using System.Linq;
 
-namespace MyNet.Humanizer
+namespace MyNet.Humanizer;
+
+/// <summary>
+/// Contains extension methods for dehumanizing strings.
+/// </summary>
+public static class StringDehumanizeExtensions
 {
     /// <summary>
-    /// Contains extension methods for dehumanizing strings.
+    /// Dehumanizes a string; e.g. 'some string', 'Some String', 'Some string' -> 'SomeString'.
     /// </summary>
-    public static class StringDehumanizeExtensions
+    /// <param name="input">The string to be dehumanized.</param>
+    public static string Dehumanize(this string input)
     {
-        /// <summary>
-        /// Dehumanizes a string; e.g. 'some string', 'Some String', 'Some string' -> 'SomeString'
-        /// </summary>
-        /// <param name="input">The string to be dehumanized</param>
-        /// <returns></returns>
-        public static string Dehumanize(this string input)
-        {
-            var titlizedWords = input.Split(' ').Select(word => word.Humanize(LetterCasing.Title));
-            return string.Join("", titlizedWords).Replace(" ", "");
-        }
+        var titlizedWords = input.Split(' ').Select(word => word.Humanize(LetterCasing.Title));
+        return string.Join(string.Empty, titlizedWords).Replace(" ", string.Empty, System.StringComparison.OrdinalIgnoreCase);
     }
 }

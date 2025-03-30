@@ -1,5 +1,8 @@
-﻿// Copyright (c) Stéphane ANDRE. All Right Reserved.
-// See the LICENSE file in the project root for more information.
+﻿// -----------------------------------------------------------------------
+// <copyright file="ResourceLocator.cs" company="Stéphane ANDRE">
+// Copyright (c) Stéphane ANDRE. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 using MyNet.Humanizer.DateTimes;
 using MyNet.Humanizer.Inflections;
@@ -7,32 +10,30 @@ using MyNet.Humanizer.Ordinalizing;
 using MyNet.Humanizer.Resources;
 using MyNet.Utilities.Localization;
 
-namespace MyNet.Humanizer
+namespace MyNet.Humanizer;
+
+public static class ResourceLocator
 {
-    public static class ResourceLocator
+    private static bool _isInitialized;
+
+    public static void Initialize()
     {
-        private static bool _isInitialized;
+        if (_isInitialized) return;
 
-        public static void Initialize()
-        {
-            if (_isInitialized) return;
+        TranslationService.RegisterResources(nameof(DateHumanizeResources), DateHumanizeResources.ResourceManager);
+        TranslationService.RegisterResources(nameof(EnumHumanizeResources), EnumHumanizeResources.ResourceManager);
 
-            TranslationService.RegisterResources(nameof(DateHumanizeResources), DateHumanizeResources.ResourceManager);
-            TranslationService.RegisterResources(nameof(EnumHumanizeResources), EnumHumanizeResources.ResourceManager);
+        LocalizationService.Register<IInflector, DefaultInflector>();
+        LocalizationService.Register<IOrdinalizer, DefaultOrdinalizer>();
 
-            LocalizationService.Register<IInflector, DefaultInflector>();
-            LocalizationService.Register<IOrdinalizer, DefaultOrdinalizer>();
+        LocalizationService.Register<IInflector, EnglishInflector>(Cultures.English);
+        LocalizationService.Register<IOrdinalizer, EnglishOrdinalizer>(Cultures.English);
+        LocalizationService.Register<IDateTimeFormatter, EnglishDateTimeFormatter>(Cultures.English);
 
-            LocalizationService.Register<IInflector, EnglishInflector>(Cultures.English);
-            LocalizationService.Register<IOrdinalizer, EnglishOrdinalizer>(Cultures.English);
-            LocalizationService.Register<IDateTimeFormatter, EnglishDateTimeFormatter>(Cultures.English);
+        LocalizationService.Register<IInflector, FrenchInflector>(Cultures.French);
+        LocalizationService.Register<IOrdinalizer, FrenchOrdinalizer>(Cultures.French);
+        LocalizationService.Register<IDateTimeFormatter, FrenchDateTimeFormatter>(Cultures.French);
 
-            LocalizationService.Register<IInflector, FrenchInflector>(Cultures.French);
-            LocalizationService.Register<IOrdinalizer, FrenchOrdinalizer>(Cultures.French);
-            LocalizationService.Register<IDateTimeFormatter, FrenchDateTimeFormatter>(Cultures.French);
-
-            _isInitialized = true;
-        }
-
+        _isInitialized = true;
     }
 }

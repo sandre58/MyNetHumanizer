@@ -1,26 +1,28 @@
-﻿// Copyright (c) Stéphane ANDRE. All Right Reserved.
-// See the LICENSE file in the project root for more information.
+﻿// -----------------------------------------------------------------------
+// <copyright file="Truncator.cs" company="Stéphane ANDRE">
+// Copyright (c) Stéphane ANDRE. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
-namespace MyNet.Humanizer.Truncation
+namespace MyNet.Humanizer.Truncation;
+
+/// <summary>
+/// Gets a ITruncator.
+/// </summary>
+public static class Truncator
 {
     /// <summary>
-    /// Gets a ITruncator
+    /// Gets fixed length truncator.
     /// </summary>
-    public static class Truncator
-    {
-        /// <summary>
-        /// Fixed length truncator
-        /// </summary>
-        public static ITruncator FixedLength => new FixedLengthTruncator();
+    public static ITruncator FixedLength => new FixedLengthTruncator();
 
-        /// <summary>
-        /// Fixed number of characters truncator
-        /// </summary>
-        public static ITruncator FixedNumberOfCharacters => new FixedNumberOfCharactersTruncator();
+    /// <summary>
+    /// Gets fixed number of characters truncator.
+    /// </summary>
+    public static ITruncator FixedNumberOfCharacters => new FixedNumberOfCharactersTruncator();
 
-        /// <summary>
-        /// Fixed number of words truncator
-        /// </summary>
-        public static ITruncator FixedNumberOfWords => new FixedNumberOfWordsTruncator();
-    }
+    /// <summary>
+    /// Gets fixed number of words truncator.
+    /// </summary>
+    public static ITruncator FixedNumberOfWords => new FixedNumberOfWordsTruncator();
 }

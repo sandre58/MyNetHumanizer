@@ -1,21 +1,23 @@
-﻿// Copyright (c) Stéphane ANDRE. All Right Reserved.
-// See the LICENSE file in the project root for more information.
+﻿// -----------------------------------------------------------------------
+// <copyright file="Tense.cs" company="Stéphane ANDRE">
+// Copyright (c) Stéphane ANDRE. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
-namespace MyNet.Humanizer.DateTimes
+namespace MyNet.Humanizer.DateTimes;
+
+/// <summary>
+/// Enumerates the possible time references; past or future.
+/// </summary>
+public enum Tense
 {
     /// <summary>
-    /// Enumerates the possible time references; past or future.
+    /// Indicates the future.
     /// </summary>
-    public enum Tense
-    {
-        /// <summary>
-        /// Indicates the future.
-        /// </summary>
-        Future,
+    Future,
 
-        /// <summary>
-        /// Indicates the past.
-        /// </summary>
-        Past
-    }
+    /// <summary>
+    /// Indicates the past.
+    /// </summary>
+    Past
 }

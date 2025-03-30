@@ -1,12 +1,14 @@
-﻿// Copyright (c) Stéphane ANDRE. All Right Reserved.
-// See the LICENSE file in the project root for more information.
+﻿// -----------------------------------------------------------------------
+// <copyright file="ToUpperCase.cs" company="Stéphane ANDRE">
+// Copyright (c) Stéphane ANDRE. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 using System.Globalization;
 
-namespace MyNet.Humanizer.Transformer
+namespace MyNet.Humanizer.Transformer;
+
+internal sealed class ToUpperCase : IStringTransformer
 {
-    internal class ToUpperCase : IStringTransformer
-    {
-        public string Transform(string input, CultureInfo culture) => input.ToUpper();
-    }
+    public string Transform(string input, CultureInfo culture) => input.ToUpper(CultureInfo.CurrentCulture);
 }

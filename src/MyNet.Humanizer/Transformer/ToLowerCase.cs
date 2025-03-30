@@ -1,12 +1,14 @@
-﻿// Copyright (c) Stéphane ANDRE. All Right Reserved.
-// See the LICENSE file in the project root for more information.
+﻿// -----------------------------------------------------------------------
+// <copyright file="ToLowerCase.cs" company="Stéphane ANDRE">
+// Copyright (c) Stéphane ANDRE. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 using System.Globalization;
 
-namespace MyNet.Humanizer.Transformer
+namespace MyNet.Humanizer.Transformer;
+
+internal sealed class ToLowerCase : IStringTransformer
 {
-    internal class ToLowerCase : IStringTransformer
-    {
-        public string Transform(string input, CultureInfo culture) => culture.TextInfo.ToLower(input);
-    }
+    public string Transform(string input, CultureInfo culture) => culture.TextInfo.ToLower(input);
 }
