@@ -10,6 +10,7 @@ using Xunit;
 
 namespace MyNet.Humanizer.UnitTests;
 
+[Collection("UseCultureSequential")]
 public class InflectorExtensionsTests
 {
     [Theory]
@@ -361,6 +362,7 @@ internal sealed class FrenchPluralTestSource : IEnumerable<object[]>
         yield return ["carnaval", "carnavals"];
         yield return ["portail", "portails"];
         yield return ["bail", "baux"];
+        yield return ["genou", "genoux"];
         yield return ["cou", "cous"];
     }
 
