@@ -27,7 +27,7 @@ public class NumberHumanizeExtensionsTests
     [InlineData(1, FileSizeUnit.Megabyte, false, "1.00 megabyte")]
     [InlineData(0, FileSizeUnit.Megabyte, false, "0.00 megabytes")]
     public void ToFileSize(double value, FileSizeUnit unit, bool abbreviation, string expected)
-        => Assert.Equal(expected, value.Humanize(unit, abbreviation), StringComparer.CurrentCulture);
+        => Assert.Equal(expected, value.Humanize(unit, abbreviation), StringComparer.Ordinal);
 
     [UseCulture("fr-FR")]
     [Theory]
@@ -43,8 +43,9 @@ public class NumberHumanizeExtensionsTests
     [InlineData(0, FileSizeUnit.Megabyte, false, "0,00 megaoctet")]
     public void ToFileSizeFr(double value, FileSizeUnit unit, bool abbreviation, string expected)
     {
-        CultureInfo.CurrentCulture.NumberFormat.NumberGroupSeparator = " ";
-        Assert.Equal(expected, value.Humanize(unit, abbreviation), StringComparer.CurrentCulture);
+        if (!CultureInfo.CurrentCulture.NumberFormat.IsReadOnly)
+            CultureInfo.CurrentCulture.NumberFormat.NumberGroupSeparator = " ";
+        Assert.Equal(expected, value.Humanize(unit, abbreviation), StringComparer.Ordinal);
     }
 
     [Theory]
@@ -63,5 +64,5 @@ public class NumberHumanizeExtensionsTests
     [InlineData(244587587, FileSizeUnit.Kilobyte, FileSizeUnit.Byte, FileSizeUnit.Kilobyte, "244,587,587.00 kb")]
     [InlineData(244587587, FileSizeUnit.Kilobyte, FileSizeUnit.Gigabyte, FileSizeUnit.Terabyte, "233.26 gb")]
     public void ToPreferredFileSize(double value, FileSizeUnit unit, FileSizeUnit minUnit, FileSizeUnit maxUnit, string expected)
-        => Assert.Equal(expected, value.Humanize(unit, minUnit, maxUnit), StringComparer.CurrentCulture);
+        => Assert.Equal(expected, value.Humanize(unit, minUnit, maxUnit), StringComparer.Ordinal);
 }
